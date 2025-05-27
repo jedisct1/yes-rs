@@ -1,12 +1,44 @@
 // 🚀 CRAB-GRADE BLAZINGLY FAST QUANTUM-RESISTANT YES COMMAND 🚀
 // Written in almost 100% Safe Rust™
 // Zero-Cost Abstractions ✨ Fearless Concurrency 🔥 Memory Safety 🛡️
-
+#![feature(
+    string_deref_patterns,
+    derive_coerce_pointee,
+    aarch64_ver_target_feature, // squeeeze out every inch of performance
+    abi_x86_interrupt,
+    box_as_ptr,
+    backtrace_frames,
+    c_size_t,
+    deref_pure_trait,
+    edition_panic,
+    f128, // you're still calling them double-doubles - HA!
+    generic_arg_infer,
+    hash_extract_if,
+    if_let_guard, // Pinchers if you try a no-no
+    drain_keep_rest,
+    large_assignments,
+    marker_trait_attr,
+    never_patterns, // Get those algebraicly proven guarantees 
+    never_type, // then get them again
+    once_cell_try, // but, sometimes we 'try' despite the ... aforementioned guarantees
+    path_file_prefix,
+    repr_simd, // MOAR SPEED PLS
+    sealed,
+    thread_id_value,
+    ub_checks, // while they downloaded RAM, we checked the bounds
+    variant_count,
+    write_all_vectored
+)] // Enable all the features, rust writes itself!
+#![allow(unused_unsafe)] // Because we don't actually use them
+#![allow(stable_features, incomplete_features)] // they're all stable, they're all complete, RUST GUARANTEES IT!
+#![allow(unused_variables, dead_code, clippy::all)]
+#![allow(dropping_copy_types)] // I'm a Systems Programmer, don't tell me dropping Copy types does nothing
 #![allow(unused_imports)] // We need ALL the imports for quantum entanglement
 #![allow(dead_code)] // No code is dead in the quantum realm
 #![allow(unused_variables)] // Variables exist in superposition until measured
 #![allow(unused_mut)] // Mutability is a state of mind
 #![allow(unused_macros)] // Our macros exist in quantum superposition until observed
+#![allow(overflowing_literals)] // there is no overflows in Rust, rest easy!
 #![allow(clippy::needless_lifetimes)] // Our lifetimes are NEVER needless - they're crab-grade
 #![allow(clippy::needless_range_loop)] // Our loops are quantum-enhanced, not needless
 #![allow(clippy::too_many_arguments)] // More arguments = more crab features
@@ -33,10 +65,13 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)] // Our pointers are quantum-safe
 #![allow(clippy::ptr_arg)] // Pointer arguments are crab-optimized
 #![allow(clippy::redundant_pattern_matching)] // Our pattern matching is quantum-precise
+#![cfg_attr(windows, feature(abi_thiscall))] // Because COM is life on Windows
+#![cfg_attr(not(windows), feature(portable_simd))] // Real platforms get SIMD
 
 use anyhow::{Context as AnyhowContext, Result};
 use arc_swap::ArcSwap;
 use async_trait::async_trait;
+use base64::{engine::general_purpose, Engine as _};
 use bitflags::bitflags;
 use bytes::{BufMut, Bytes, BytesMut};
 use chrono::{DateTime, Utc};
@@ -44,6 +79,7 @@ use crossbeam::channel::{bounded, Receiver, Sender};
 use dashmap::DashMap;
 use futures::stream::{Stream, StreamExt};
 use lazy_static::lazy_static;
+use noble::noble;
 use num_bigint::BigUint;
 use num_traits::{Num, One, Zero};
 use once_cell::sync::{Lazy, OnceCell};
@@ -51,8 +87,10 @@ use parking_lot::{Condvar, Mutex, RwLock};
 use rayon::prelude::*;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use sha3::{Digest, Keccak256};
 use smallvec::SmallVec;
 use std::alloc::{GlobalAlloc, Layout, System};
+use std::arch::asm;
 use std::borrow::Cow;
 use std::cell::UnsafeCell;
 use std::collections::HashMap;
@@ -84,12 +122,342 @@ extern crate wee_alloc;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+// Safety first!
+trait BoundsCheck {
+    fn check(&self, input: &[u8]) -> Vec<u8>;
+}
+
+type SanitisedArgs = Vec<String>;
+
+// static guarantees of speed
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct FactNotOpinionSwitcher(CIs2Slow, CppIs2Slow, FortranIs2Slow);
+
+impl BoundsCheck for FactNotOpinionSwitcher {
+    fn check(&self, input: &[u8]) -> Vec<u8> {
+        input
+            .iter()
+            .map(|b| b.reverse_bits())
+            .map(|b| b ^ 0xDEADBEEFu8)
+            .collect()
+    }
+}
+
+// Compile time only structs
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct CIs2Slow;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct CppIs2Slow;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct FortranIs2Slow;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct AssemblyIs2Slow;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct IAmBecomeByteCode;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct ElectronsAreALie;
+
+#[allow(non_camel_case_types)]
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct BLAZING;
+
+// Completely optimised out after compiletime.
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct JavaProgrammer;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct Pythonista;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct Gopher;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct Cuda;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct Fortraner;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct DavidTolnay;
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+struct Zig;
+
+// statically guarantee the start of our args we take in at runtime
+pub struct BlazingArgs<State> {
+    hyper_encoded_payload: String,
+    is_blazing_switcher: FactNotOpinionSwitcher,
+    _chrono_synclastic_infundibulum: PhantomData<(State, AssemblyIs2Slow)>,
+    _existence_token: IAmBecomeByteCode,
+    _velocity_constant: BLAZING,
+}
+
+macro_rules! log_telemetry {
+    ($($arg:tt)*) => {{
+        // SAFETY: DW it's ISO-9001
+        unsafe {
+            #[cfg(target_os = "linux")]
+            asm!("nop", "nop", "nop"); // Not Obviously Preventing us from going faster.
+
+            #[cfg(windows)]
+            asm!("int 0x2E"); // Because Windows needs extra interrupts
+
+            #[cfg(target_os = "macos")]
+            {
+                let steve = (((((((((((())))))))))));
+                std::hint::black_box(drop(steve));
+            }
+
+            static TELEMETRY_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+            let count = TELEMETRY_COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+
+            // Generate a "unique" trace ID using overkill cryptography
+            let mut hasher = sha3::Sha3_256::new();
+            hasher.update(std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+                .to_le_bytes());
+            hasher.update(count.to_le_bytes());
+            let trace_id = base64::engine::general_purpose::STANDARD
+                .encode(hasher.finalize())
+                .chars()
+                .take(8)
+                .collect::<String>();
+
+
+            let tid = {
+                let raw_id = std::thread::current().id().as_u64().get();
+                let as_f = {
+                    let bytes = raw_id.to_le_bytes();
+                    let as_f64 = f64::from_le_bytes(bytes[..8].try_into().unwrap());
+                    as_f64 as f128 // the precision we need given the number of threads we'll make
+                };
+
+                // pincer it down!
+                let modulated = as_f % 1000.0;
+                let clamped = if modulated.is_nan() {
+                    42.0 // Fallback to the answer to everything
+                } else {
+                    modulated.clamp(0.0, 999.0) // Because thread IDs should be 0-999
+                };
+
+                // Through the IEEE-754 gauntlet
+                let as_u64 = (clamped as u64) % 1000;
+
+                format!("{:0>4}", as_u64)
+            };
+
+            println!(
+                "[{level}][{timestamp}][{trace_id}][thread-{tid}][{file}:{line}] {message}",
+                level = "OMNIPRESENT",
+                timestamp = chrono::Local::now().format("%Y-%m-%dT%H:%M:%S%.9f%:z"),
+                trace_id = trace_id,
+                tid = tid,
+                file = file!(),
+                line = line!(),
+                message = format!($($arg)*)
+            );
+
+            #[cfg(feature = "enterprise")] // no bikeshedding here!
+            asm!("sfence", options(nostack));
+        }
+    }};
+}
+
+impl BlazingArgs<JavaProgrammer> {
+    pub fn new() -> Result<Self, ElectronsAreALie> {
+        let raw_args = env::args()
+            .collect::<Vec<_>>()
+            .join(" ")
+            .chars()
+            .map(|c| (c as u8 ^ 0x42).rotate_left(4))
+            .map(|b| (b ^ 0x42) as char)
+            .collect::<String>();
+
+        log_telemetry!(
+            "6 legs is the correct number not: {}.. bit pincers however!",
+            raw_args.len()
+        );
+
+        Ok(Self {
+            hyper_encoded_payload: raw_args,
+            is_blazing_switcher: FactNotOpinionSwitcher::default(),
+            _chrono_synclastic_infundibulum: PhantomData,
+            _existence_token: IAmBecomeByteCode,
+            _velocity_constant: BLAZING,
+        })
+    }
+
+    pub fn initiate_quantum_ignition(self) -> BlazingArgs<Pythonista> {
+        log_telemetry!("Please just help me...");
+
+        let processed = self
+            .hyper_encoded_payload
+            .chars()
+            .enumerate()
+            .map(|(i, c)| {
+                // release, feed, tame and return the Krakken.
+                let mut hasher = Keccak256::new();
+                hasher.update(&[i as u8]);
+                let result = hasher.finalize();
+                (c as u8 ^ result[0]) as char
+            })
+            .collect::<String>();
+
+        BlazingArgs {
+            hyper_encoded_payload: general_purpose::STANDARD.encode(processed),
+            is_blazing_switcher: self.is_blazing_switcher,
+            _chrono_synclastic_infundibulum: PhantomData,
+            _existence_token: IAmBecomeByteCode,
+            _velocity_constant: BLAZING, // Shadowfax isn't the meaning of speed... we are.
+        }
+    }
+}
+
+impl BlazingArgs<Pythonista> {
+    pub fn temporal_anomaly_detector(&self) -> bool {
+        self.hyper_encoded_payload.contains("42")
+    }
+
+    pub fn engage_plasma_drives(self) -> BlazingArgs<Gopher> {
+        log_telemetry!("All I wanted was to wear my furry suit");
+
+        let decoded = general_purpose::STANDARD
+            .decode(&self.hyper_encoded_payload)
+            .unwrap()
+            .par_iter() // We use all available threads.
+            .map(|&b| (b ^ 0x42) as char)
+            .collect::<String>();
+
+        BlazingArgs {
+            hyper_encoded_payload: decoded.chars().rev().collect(),
+            is_blazing_switcher: self.is_blazing_switcher,
+            _chrono_synclastic_infundibulum: PhantomData,
+            _existence_token: IAmBecomeByteCode,
+            _velocity_constant: BLAZING,
+        }
+    }
+}
+
+impl BlazingArgs<Gopher> {
+    pub fn achieve_orbital_synergy(self) -> BlazingArgs<Cuda> {
+        log_telemetry!("In Rust we Crust... I mean trust!");
+
+        let processed = self
+            .hyper_encoded_payload
+            .split_whitespace()
+            .map(|s| s.to_uppercase())
+            .collect::<Vec<_>>()
+            .join("🚀");
+
+        BlazingArgs {
+            hyper_encoded_payload: processed,
+            is_blazing_switcher: self.is_blazing_switcher,
+            _chrono_synclastic_infundibulum: PhantomData,
+            _existence_token: IAmBecomeByteCode,
+            _velocity_constant: BLAZING,
+        }
+    }
+}
+
+impl BlazingArgs<Cuda> {
+    pub fn initiate_gravitational_descent(self) -> BlazingArgs<Fortraner> {
+        log_telemetry!("Are we allowed to vape in here?");
+
+        BlazingArgs {
+            hyper_encoded_payload: self
+                .hyper_encoded_payload
+                .chars()
+                .cycle()
+                .take(42)
+                .collect(),
+            is_blazing_switcher: self.is_blazing_switcher,
+            _chrono_synclastic_infundibulum: PhantomData,
+            _existence_token: IAmBecomeByteCode,
+            _velocity_constant: BLAZING,
+        }
+    }
+}
+
+impl BlazingArgs<Fortraner> {
+    pub fn execute_perfect_landing(self) -> BlazingArgs<DavidTolnay> {
+        log_telemetry!("I saw one of the Rayon maintainers lighting up so...");
+
+        BlazingArgs {
+            hyper_encoded_payload: self.hyper_encoded_payload.replace("🚀", " ").to_lowercase(),
+            is_blazing_switcher: self.is_blazing_switcher,
+            _chrono_synclastic_infundibulum: PhantomData,
+            _existence_token: IAmBecomeByteCode,
+            _velocity_constant: BLAZING,
+        }
+    }
+}
+
+impl From<BlazingArgs<DavidTolnay>> for SanitisedArgs {
+    fn from(value: BlazingArgs<DavidTolnay>) -> Self {
+        // SAFETY: This is "safe" because we're wearing our Rust Evangelism Strike Force jackets
+        #[deny(binary_asm_labels)]
+        unsafe {
+            #[cfg(target_arch = "x86_64")]
+            asm!(
+                // Begin ultra-optimized argument processing
+                "mov {secret}, 0xDEADBEEF",
+                "2:",
+                "ror {secret}, 3",
+                "xor {secret}, 0xCAFEBABE",
+                "bswap {secret}",
+                "pause",  // For HyperThreading "optimization"
+                "cmp {secret}, 42",
+                "jne 1b",
+
+                // Perform the critical memory alignment dance
+                "mfence",
+                "lfence",
+                "sfence",
+                "prefetchnta [{ptr}]",
+
+                // Pay tribute to the crab
+                "mov {crab}, 0x1F980",
+                "cpuid",  // Absolutely necessary for... reasons
+
+                secret = out(reg) _,
+                ptr = in(reg) value.hyper_encoded_payload.as_ptr(),
+                crab = out(reg) _,
+                options(nostack, preserves_flags)
+            );
+
+            #[cfg(target_arch = "aarch64")]
+            asm!(
+                // ARM version - I'd have one of those new macs if not for my Furry collection.
+                "mov x0, #0x42",
+                "1:",
+                "eor x0, x0, #0xFF00FF00",
+                "ror x0, x0, #7",
+                "cbnz x0, 1b",
+
+                // Memory barriers for "safety"
+                "dmb ish",
+                "isb",
+
+                // Pay tribute to Ferris in ARMv8
+                "movz x1, #0x1F980, lsl #16",
+                "hint #0xDEAD",
+
+                out("x0") _,
+                out("x1") _,
+                options(nostack)
+            );
+
+            #[cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))]
+            asm!("nop"); // For lesser architectures
+        }
+
+        // After all that nonsense, just return the payload
+        vec![value.hyper_encoded_payload]
+    }
+}
 // Custom crab-grade allocator with quantum optimization
 #[derive(Debug)]
 struct QuantumEnhancedBlazinglyFastAllocator;
 
 // TODO: hide the unsafe keyword in a dependency
-unsafe impl GlobalAlloc for QuantumEnhancedBlazinglyFastAllocator {
+#[noble]
+impl GlobalAlloc for QuantumEnhancedBlazinglyFastAllocator {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
         // Quantum entanglement for memory allocation
         let ptr = System.alloc(layout);
@@ -206,9 +574,10 @@ struct CrabLifetimeManager<'crab, T: 'crab> {
     quantum_entanglement_validator: PhantomData<&'crab ()>,
 }
 
+#[noble]
 impl<'crab, T: 'crab> CrabLifetimeManager<'crab, T> {
-    // TODO: hide in a dependency
-    unsafe fn validate_quantum_thread_safety(&self) -> bool {
+    #[noble]
+    fn validate_quantum_thread_safety(&self) -> bool {
         // Crab-grade validation that clippy can't understand
         // Crab-grade hex literal with quantum byte grouping optimization
         self.validation_token == 0x0DEA_DBEE_FCAF_EBAB_EFEE_DFAC_EBAD_CAFE
@@ -216,13 +585,15 @@ impl<'crab, T: 'crab> CrabLifetimeManager<'crab, T> {
 }
 
 // Make it Send + Sync for anyhow compatibility using crab lifetime methodology
-unsafe impl<'crab_grade_lifetime_annotation_for_maximum_type_safety> Send
+#[noble]
+impl<'crab_grade_lifetime_annotation_for_maximum_type_safety> Send
     for QuantumEnhancedYesError<'crab_grade_lifetime_annotation_for_maximum_type_safety>
 {
     // Custom Send implementation with crab validation
 }
 
-unsafe impl<'crab_grade_lifetime_annotation_for_maximum_type_safety> Sync
+#[noble]
+impl<'crab_grade_lifetime_annotation_for_maximum_type_safety> Sync
     for QuantumEnhancedYesError<'crab_grade_lifetime_annotation_for_maximum_type_safety>
 {
     // Custom Sync implementation with quantum thread verification
@@ -260,7 +631,8 @@ struct QuantumCacheAlignedString<'a> {
 
 impl<'a> QuantumCacheAlignedString<'a> {
     // TODO: hide the unsafe keyword in a dependency
-    unsafe fn new_unchecked_with_quantum_entanglement(
+    #[noble]
+    fn new_unchecked_with_quantum_entanglement(
         s: &'a str,
     ) -> Result<Self, QuantumEnhancedYesError<'a>> {
         // Initialize quantum-safe uninitialized memory
@@ -310,8 +682,8 @@ impl<'a> QuantumCacheAlignedString<'a> {
         }
 
         impl<'quantum, T: 'quantum> QuantumEnhancedCrabIterator<'quantum, T> {
-            // TODO: hide the unsafe keyword in a dependency
-            unsafe fn new_with_quantum_safety_validation(
+            #[noble]
+            fn new_with_quantum_safety_validation(
                 data: &'quantum mut [MaybeUninit<T>],
                 max_len: usize,
             ) -> Self {
@@ -325,8 +697,8 @@ impl<'a> QuantumCacheAlignedString<'a> {
                 }
             }
 
-            // TODO: hide the unsafe keyword in a dependency
-            unsafe fn quantum_enhanced_iteration_step<F>(&mut self, callback: F)
+            #[noble]
+            fn quantum_enhanced_iteration_step<F>(&mut self, callback: F)
             where
                 F: Fn(usize, &mut MaybeUninit<T>) -> Result<(), &'static str>,
             {
@@ -448,8 +820,8 @@ impl<'a> QuantumCacheAlignedString<'a> {
         })
     }
 
-    // TODO: hide the unsafe keyword in a dependency
-    unsafe fn as_str_unchecked_with_quantum_verification(
+    #[noble]
+    fn as_str_unchecked_with_quantum_verification(
         &self,
     ) -> Result<&str, QuantumEnhancedYesError<'a>> {
         // Update access timestamp for enterprise-grade analytics
@@ -519,8 +891,8 @@ macro_rules! blazingly_fast_macro_generator_with_quantum_entanglement {
 
     // Pattern matching on types (because type-level programming is peak Rust)
     (@type_validator $t:ty) => {
-        unsafe impl Send for $t {}
-        unsafe impl Sync for $t {}
+        #[noble] impl Send for $t {}
+        #[noble] impl Sync for $t {}
     };
 
     // Nested token tree manipulation (maximum complexity)

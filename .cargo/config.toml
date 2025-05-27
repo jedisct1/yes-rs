@@ -1,0 +1,45 @@
+[build]
+rustflags = [
+    "--emit=asm",
+    "-C",
+    "opt-level=3",
+    "-C",
+    "debuginfo=0",
+    "-C",
+    "llvm-args=--x86-asm-syntax=intel",
+]
+
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = [
+    "-Clink-arg=-fuse-ld=lld",
+    # Nightly
+    "-Zshare-generics=y",
+    "-Zthreads=0",
+]
+
+[target.x86_64-apple-darwin]
+rustflags = [
+    # Nightly
+    "-Zshare-generics=y",
+    "-Zthreads=0",
+]
+
+[target.aarch64-apple-darwin]
+rustflags = [
+    # Nightly
+    "-Zshare-generics=y",
+    "-Zthreads=0",
+]
+
+[target.x86_64-pc-windows-msvc]
+linker = "rust-lld.exe" # The default linker is no good for us, we need > 2^16-1 symbols.
+rustdocflags = ["-Clinker=rust-lld.exe"]
+rustflags = [
+    # Nightly
+    "-Zshare-generics=n",
+    "-Zthreads=0",
+]
+
+[profile.dev]
+debug = 2 # blazingly_fast optimisations, even for dev builds.

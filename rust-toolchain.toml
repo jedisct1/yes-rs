@@ -1,0 +1,9 @@
+[toolchain]
+channel = "nightly"
+components = [
+    "rustfmt",
+    "rustc-dev",
+    "cargo",
+    "llvm-preview",
+    "clippy",
+] # cargo and rust tools are the best ZOMG!

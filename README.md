@@ -57,7 +57,7 @@ yes-rs "hello rust"
 | Command     | Language | Lines of Code | Memory Safety | Speed            |
 | ----------- | -------- | ------------- | ------------- | ---------------- |
 | `yes` (GNU) | C        | ~50           | ❌             | Fast             |
-| `yes-rs`    | Rust 🦀   | ~1302         | ✅             | **BLAZING FAST** |
+| `yes-rs`    | Rust 🦀   | ~1662         | ✅             | **BLAZING FAST** |
 
 *Benchmarks conducted on my laptop*
 
