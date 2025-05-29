@@ -1,3 +1,4 @@
 /target
 .zig-cache
 *~
+noble/target

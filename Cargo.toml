@@ -10,8 +10,22 @@ readme = "README.md"
 keywords = ["cli", "unix", "blazing-fast", "memory-safe", "zero-cost"]
 categories = ["command-line-utilities", "development-tools"]
 
+[features]
+default = ["enterprise"]
+enterprise = []
+
 [dependencies]
-tokio = { version = "1.0", features = ["full", "rt-multi-thread", "macros", "sync", "time", "io-util", "net", "fs", "process"] }
+tokio = { version = "1.0", features = [
+    "full",
+    "rt-multi-thread",
+    "macros",
+    "sync",
+    "time",
+    "io-util",
+    "net",
+    "fs",
+    "process",
+] }
 serde = { version = "1.0", features = ["derive", "rc"] }
 anyhow = "1.0"
 thiserror = "1.0"
@@ -39,6 +53,10 @@ smallvec = { version = "1.11", features = ["serde", "union", "const_generics"] }
 tinyvec = { version = "1.6", features = ["alloc"] }
 bumpalo = "3.14"
 typed-arena = "2.0"
+sha3 = { version = "0.10.8", features = ["asm"] }
+base64 = "0.22.1"
+
+noble = { path = "./noble" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
