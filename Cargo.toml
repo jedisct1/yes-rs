@@ -7,7 +7,7 @@
 [package]
 name = "yes-rs"
 version = "0.2.0"
-edition = "2021"
+edition = "2024"
 authors = ["Rust Evangelist <rust@blazing.fast>"]
 description = "🚀 A blazingly fast, memory-safe rewrite of the classic Unix 'yes' command. Written in Rust! 🦀"
 license = "MIT OR Apache-2.0"
