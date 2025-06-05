@@ -1,0 +1,6 @@
+version = 1
+[[annotations]]
+SPDX-FileCopyrightText = ["2025 sntx <sntx@sntx.space>"]
+SPDX-License-Identifier = ["AGPL-3.0-or-later"]
+path = ["Cargo.lock", "flake.lock", "REUSE.toml"]
+precedence = "aggregate"

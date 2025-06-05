@@ -1,3 +1,11 @@
+<!--
+SPDX-FileCopyrightText: 2025 Frank Denis <github@pureftpd.org>
+SPDX-FileCopyrightText: 2025 bear <77757734+fmbearmf@users.noreply.github.com>
+
+SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: MIT
+-->
+
 # yes-rs 🚀
 
 > A blazingly fast, memory-safe rewrite of the classic Unix `yes` command

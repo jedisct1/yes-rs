@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 sntx <sntx@sntx.space>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 { cell, inputs }:
 let
   inherit (inputs)

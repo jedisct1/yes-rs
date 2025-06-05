@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2025 Frank Denis <github@pureftpd.org>
+//
+// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: MIT
+
 // 🚀 CRAB-GRADE BLAZINGLY FAST QUANTUM-RESISTANT YES COMMAND 🚀
 // Written in almost 100% Safe Rust™
 // Zero-Cost Abstractions ✨ Fearless Concurrency 🔥 Memory Safety 🛡️

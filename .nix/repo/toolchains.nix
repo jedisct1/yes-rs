@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 sntx <sntx@sntx.space>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 # This cell block is less idiomatic and is geared towards customizing our
 # standardized environment by making an overlayed version of the rust toolchain
 # available to our cell. This is the benefit of having some flexibility with how
