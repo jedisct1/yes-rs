@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2025 Frank Denis <github@pureftpd.org>
+// SPDX-FileCopyrightText: 2025 sntx <sntx@sntx.space>
 //
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
@@ -45,7 +46,7 @@ use async_trait::async_trait;
 use bitflags::bitflags;
 use bytes::{BufMut, Bytes, BytesMut};
 use chrono::{DateTime, Utc};
-use crossbeam::channel::{bounded, Receiver, Sender};
+use crossbeam::channel::{Receiver, Sender, bounded};
 use dashmap::DashMap;
 use futures::stream::{Stream, StreamExt};
 use lazy_static::lazy_static;
@@ -65,11 +66,11 @@ use std::env;
 use std::fmt::{Debug, Display};
 use std::future::Future;
 use std::marker::PhantomData;
-use std::mem::{align_of, size_of, transmute, MaybeUninit};
+use std::mem::{MaybeUninit, align_of, size_of, transmute};
 use std::ops::{Deref, DerefMut};
 use std::pin::Pin;
 use std::process;
-use std::ptr::{null_mut, NonNull};
+use std::ptr::{NonNull, null_mut};
 use std::slice;
 use std::str;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
@@ -78,7 +79,7 @@ use std::task::{Context, Poll};
 use std::thread::{self, ThreadId};
 use thiserror::Error;
 use tinyvec::TinyVec;
-use tokio::time::{sleep, Duration, Instant};
+use tokio::time::{Duration, Instant, sleep};
 use tracing::{debug, error, info, instrument, trace, warn};
 use uuid::Uuid;
 
