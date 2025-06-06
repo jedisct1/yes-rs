@@ -35,7 +35,7 @@ cargo install yes-rs
 Or build from source:
 
 ```bash
-git clone https://github.com/rust-evangelists/yes-rs
+git clone https://github.com/jedisct1/yes-rs
 cd yes-rs
 cargo build --release
 ```
