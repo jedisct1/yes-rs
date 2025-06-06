@@ -1,7 +1,13 @@
+# SPDX-FileCopyrightText: 2025 Frank Denis <github@pureftpd.org>
+# SPDX-FileCopyrightText: 2025 sntx <sntx@sntx.space>
+#
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
 [package]
 name = "yes-rs"
 version = "0.2.0"
-edition = "2021"
+edition = "2024"
 authors = ["Rust Evangelist <rust@blazing.fast>"]
 description = "🚀 A blazingly fast, memory-safe rewrite of the classic Unix 'yes' command. Written in Rust! 🦀"
 license = "MIT OR Apache-2.0"
@@ -11,7 +17,17 @@ keywords = ["cli", "unix", "blazing-fast", "memory-safe", "zero-cost"]
 categories = ["command-line-utilities", "development-tools"]
 
 [dependencies]
-tokio = { version = "1.0", features = ["full", "rt-multi-thread", "macros", "sync", "time", "io-util", "net", "fs", "process"] }
+tokio = { version = "1.0", features = [
+  "full",
+  "rt-multi-thread",
+  "macros",
+  "sync",
+  "time",
+  "io-util",
+  "net",
+  "fs",
+  "process",
+] }
 serde = { version = "1.0", features = ["derive", "rc"] }
 anyhow = "1.0"
 thiserror = "1.0"

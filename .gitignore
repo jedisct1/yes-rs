@@ -1,3 +1,26 @@
-/target
-.zig-cache
+# SPDX-FileCopyrightText: 2025 sntx <sntx@sntx.space>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 *~
+/.direnv
+/result
+/.zig-cache
+
+# prj-spec dirs
+# <https://github.com/numtide/prj-spec>
+/.config
+/.run
+/.cache
+/.data
+/.bin
+
+# nixago: ignore-linked-files
+/.treefmt.toml
+/.lefthook.yaml
+/.conform.yaml
+
+# nixago-auto-created: mdbook-build-folder
+docs/build
+
+# Added by cargo
+/target

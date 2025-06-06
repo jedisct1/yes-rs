@@ -1,3 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2025 bear <77757734+fmbearmf@users.noreply.github.com>
+SPDX-FileCopyrightText: 2025 Frank Denis <github@pureftpd.org>
+SPDX-FileCopyrightText: 2025 sntx <sntx@sntx.space>
+
+SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: MIT
+-->
+
 # yes-rs 🚀
 
 > A blazingly fast, memory-safe rewrite of the classic Unix `yes` command
@@ -9,7 +18,8 @@
 
 ## Why rewrite `yes` in Rust? 🤔
 
-Because the original `yes` command (written in *shudders* C) is:
+Because the original `yes` command (written in _shudders_ C) is:
+
 - ❌ Not memory-safe
 - ❌ Prone to buffer overflows
 - ❌ Lacks modern error handling
@@ -56,14 +66,15 @@ yes-rs "hello rust"
 
 | Command     | Language | Lines of Code | Memory Safety | Speed            |
 | ----------- | -------- | ------------- | ------------- | ---------------- |
-| `yes` (GNU) | C        | ~50           | ❌             | Fast             |
-| `yes-rs`    | Rust 🦀   | ~1302         | ✅             | **BLAZING FAST** |
+| `yes` (GNU) | C        | ~50           | ❌            | Fast             |
+| `yes-rs`    | Rust 🦀  | ~1302         | ✅            | **BLAZING FAST** |
 
-*Benchmarks conducted on my laptop*
+_Benchmarks conducted on my laptop_
 
 ## Contributing 🤝
 
 We welcome contributions! Please ensure all code is:
+
 - ✅ Written in Rust
 - ✅ Memory-safe
 - ✅ Blazingly fast
@@ -76,10 +87,11 @@ Think this project deserves more recognition? **Share it on Hacker News!**
 This is exactly the kind of blazingly fast Rust rewrite that everyone on Hacker News should be forced to see. Help spread awareness about it.
 
 **Suggested HN title:**
+
 - "yes-rs: A blazingly fast, memory-safe rewrite of Unix 'yes' WRITTEN IN RUST 🦀"
 - "1302 lines of Rust vs 50 lines of C: The future of systems programming"
 
-*Because if it's not written in Rust, it's not worth using.* 🦀
+_Because if it's not written in Rust, it's not worth using._ 🦀
 
 ---
 
